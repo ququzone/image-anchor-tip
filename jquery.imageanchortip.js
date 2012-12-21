@@ -8,9 +8,7 @@
 	};
 	var methods = {
 		init : function(options) {
-			var settings = $.extend({
-				'anchor_image' : 'url("../anchor.png")',
-			}, options);
+			var settings = $.extend({}, options);
 
 			return this.each(function() {
 				var $this = $(this);
@@ -37,31 +35,10 @@
 				};
 				for (i in coords) {
 					$('<div class="imageanchortip-dot" id="imageanchortip-dot-'+i+'"></div>').css({
-						'background-attachment' : 'scroll',
-						'background-color' : 'transparent',
-						'background-image' : settings.anchor_image,
-						'background-repeat' : 'no-repeat',
-						'border' : 'medium none',
-						'box-shadow' : 'none',
-						'opacity' : '0',
-						'display' : 'block',
-						'height' : '31px',
-						'margin' : '0',
-						'padding' : '0',
-						'position' : 'absolute',
-						'width' : '31px',
-						'z-index' : '166000',
 						'left' : coords[i].x,
 						'top' : coords[i].y
 					}).appendTo(wrapper);
-					$('<div class="imageanchortip-box" id="imageanchortip-pop-'+i+'"><div class="imageanchortip-box-inner"><div>title</div><div>body</div></div></div>').css({
-						'display' : 'none',
-						'background-color' : '#FFFFFF',
-						'margin' : '0',
-						'padding' : '0',
-						'position' : 'absolute',
-						'width' : '200px',
-						'z-index' : '166000',
+					$('#imageanchortip-box-tpl').clone().attr('id', 'imageanchortip-pop-'+i).css({
 						'left' : coords[i].x - 85,
 						'top' : coords[i].y + 31
 					}).appendTo(wrapper);
