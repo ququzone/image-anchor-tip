@@ -36,7 +36,7 @@
 					y : 55
 				};
 				for (i in coords) {
-					$('<div class="imageanchortip-dot" id="dot-'+i+'"></div>').css({
+					$('<div class="imageanchortip-dot" id="imageanchortip-dot-'+i+'"></div>').css({
 						'background-attachment' : 'scroll',
 						'background-color' : 'transparent',
 						'background-image' : settings.anchor_image,
@@ -54,7 +54,7 @@
 						'left' : coords[i].x,
 						'top' : coords[i].y
 					}).appendTo(wrapper);
-					$('<div class="imageanchortip-pop" id="pop-'+i+'"><div>title</div><div>body<div></div>').css({
+					$('<div class="imageanchortip-box" id="imageanchortip-pop-'+i+'"><div class="imageanchortip-box-inner"><div>title</div><div>body</div></div></div>').css({
 						'display' : 'none',
 						'background-color' : '#FFFFFF',
 						'margin' : '0',
@@ -67,11 +67,10 @@
 					}).appendTo(wrapper);
 				}
 				$this.hover(function(event) {
-					if (!wrapper.children(".imageanchortip-dot")
-							.is(":animated")) {
+				    var $dot = wrapper.children(".imageanchortip-dot");
+					if (!$dot.is(":animated")) {
 						enterd = true;
-						wrapper.children(".imageanchortip-dot").css('opacity',
-								'1');
+						$dot.css('opacity', '1');
 					}
 				}, function(event) {
 					enterd = false;
@@ -85,15 +84,35 @@
 				});
 				wrapper.children(".imageanchortip-dot").hover(function(event) {
 					enterd = true;
-					$('#pop-'+$(this).attr('id').substring(4)).show();
+                    var $pop = $('#imageanchortip-pop-'+$(this).attr('id').substring(19));
+                    if (!$pop.is(":animated")) {
+                        $pop.show();
+                        $pop.data('poped', true);
+                    }
 				}, function(event) {
+				    var $this = $(this);
+                    var $pop = $('#imageanchortip-pop-'+$this.attr('id').substring(19));
 					enterd = false;
+					$pop.data().poped = false;
+                    setTimeout(function() {
+                        if(!$pop.data().poped) {
+                            $pop.hide();
+                        }
+                    }, 1000);
 				});
-				wrapper.children(".imageanchortip-pop").hover(function(event) {
+				wrapper.children(".imageanchortip-box").hover(function(event) {
+				    var $this = $(this);
+				    $this.data().poped = true;
+				    if (!$this.is(":animated")) {
+				        $this.show();
+                    }
 				}, function(event) {
 					var $pop = $(this);
+                    $pop.data().poped = false;
 					setTimeout(function() {
-						$pop.hide();
+					    if(!$pop.data().poped) {
+    						$pop.hide();
+					    }
 					}, 1000);
 				});
 			});
